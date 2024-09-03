@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     SpriteRenderer spriter;
     Animator anim;
     WaitForFixedUpdate wait;
-    
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
@@ -52,7 +52,7 @@ public class Enemy : MonoBehaviour
         if (!isLive)
             return;
 
-        spriter.flipX = target.position.x < rigid.position.x;    
+        spriter.flipX = target.position.x < rigid.position.x;
     }
 
     void OnEnable()
@@ -86,8 +86,9 @@ public class Enemy : MonoBehaviour
         if (health > 0)
         {
             anim.SetTrigger("Hit");
-
-        } else
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
+        }
+        else
         {
             isLive = false;
             coll.enabled = false;
@@ -96,6 +97,11 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
             GameManager.instance.kill++;
             GameManager.instance.GetExp();
+
+            if (GameManager.instance.isLive)
+            {
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead);
+            }
         }
     }
 

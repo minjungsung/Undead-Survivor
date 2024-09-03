@@ -19,12 +19,16 @@ public class LevelUp : MonoBehaviour
         Next();
         rect.localScale = Vector3.one;
         GameManager.instance.Stop();
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        AudioManager.instance.EffectBgm(true);
     }
 
     public void Hide()
     {
         rect.localScale = Vector3.zero;
         GameManager.instance.Resume();
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.instance.EffectBgm(false);
     }
 
     public void Select(int index)
@@ -35,7 +39,7 @@ public class LevelUp : MonoBehaviour
     void Next()
     {
         // 1. 모든 아이템 비활성화
-        foreach(Item item in items)
+        foreach (Item item in items)
         {
             item.gameObject.SetActive(false);
         }
@@ -54,14 +58,15 @@ public class LevelUp : MonoBehaviour
             }
         }
 
-        for (int index=0; index < ran.Length; index++)
+        for (int index = 0; index < ran.Length; index++)
         {
             Item ranItem = items[ran[index]];
             // 3. 만렙 아이템의 경우는 소비아이템으로 대체
             if (ranItem.level == ranItem.data.damages.Length)
             {
                 items[4].gameObject.SetActive(true);
-            } else
+            }
+            else
             {
                 ranItem.gameObject.SetActive(true);
             }
