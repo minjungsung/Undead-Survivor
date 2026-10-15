@@ -1,0 +1,33 @@
+name: Strict Wiki Validation
+on:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ matrix.project.timeout-minutes }}
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [{"name":"github-actions","ecosystem":"github-actions","path":".","timeout-minutes":5}]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: minjungsung/.github
+          ref: 1749d8b2d4eacf6540347c142fc2d544c68c2d14
+          path: .wiki-policy-source
+          persist-credentials: false
+      - name: Install checksum-verified workflow lint
+        if: matrix.project.ecosystem == 'github-actions'
+        run: bash .wiki-policy-source/dependency-policy/scripts/install_actionlint.sh
+      - name: Strictly validate the actual wiki source commit
+        env:
+          PROJECT_JSON: ${{ toJSON(matrix.project) }}
+          PYTHONPATH: .wiki-policy-source/dependency-policy
+          PIP_NO_CACHE_DIR: '1'
+        run: python3 .wiki-policy-source/dependency-policy/scripts/run_project.py --project-json "$PROJECT_JSON" --repository-root "$GITHUB_WORKSPACE"
