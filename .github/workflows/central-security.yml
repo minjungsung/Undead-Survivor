@@ -1,0 +1,17 @@
+name: Security Scanning
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 2 * * 0'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-scanning-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  scan:
+    uses: minjungsung/.github/.github/workflows/secret-scanning.yml@344b8013edd2afe9fb289e9391e3e6dea4bf2f52
+    with:
+      policy-ref: 344b8013edd2afe9fb289e9391e3e6dea4bf2f52
