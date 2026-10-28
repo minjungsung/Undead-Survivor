@@ -13,7 +13,7 @@ jobs:
   validate-dependencies:
     permissions:
       contents: read
-    uses: minjungsung/.github/.github/workflows/dependency-validation.yml@53eef31813cadd2611ade5062449c5089bbe1774
+    uses: minjungsung/.github/.github/workflows/dependency-validation.yml@344b8013edd2afe9fb289e9391e3e6dea4bf2f52
     with:
       pr-author: ${{ github.event.pull_request.user.login || 'policy-push' }}
       projects-json: '[{"name":"github-actions","ecosystem":"github-actions","path":".","timeout-minutes":5}]'
