@@ -12,11 +12,11 @@ jobs:
       matrix:
         project: [{"name":"github-actions","ecosystem":"github-actions","path":".","timeout-minutes":5}]
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: minjungsung/.github
           ref: 1749d8b2d4eacf6540347c142fc2d544c68c2d14
